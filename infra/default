@@ -1,0 +1,52 @@
+server {
+
+    listen 80;
+    server_name 172.20.53.199;
+    
+    location /api/ {
+        proxy_pass http://127.0.0.1:8000;
+    }
+    
+    location /admin/ {
+        proxy_pass http://127.0.0.1:8000;
+    }
+
+    location / {
+        root   /var/www/taski;
+        index  index.html index.htm;
+        try_files $uri /index.html;
+    }
+
+}
+server {
+    listen 80;
+    server_name 172.20.53.199;
+
+    location / {
+        root /var/www/kittygram/;
+        index index.html;
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /api/ {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        client_max_body_size 20M;
+    }
+
+    location /admin/ {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        client_max_body_size 20M;
+    }
+
+    location /media/ {
+        alias /var/www/kittygram/media/;
+    }
+
+    location /static/ {
+        alias /home/timur/infra_sprint1/backend/static/;
+    }
+}

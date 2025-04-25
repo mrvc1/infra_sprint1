@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn daemon for Kittygram project
+After=network.target
+
+[Service]
+User=timur
+WorkingDirectory=/home/timur/infra_sprint1/backend/
+ExecStart=/home/timur/infra_sprint1/backend/venv/bin/gunicorn kittygram_backend.wsgi:application --bind 0.0.0.0:8080
+
+
+[Install]
+WantedBy=multi-user.target
+
